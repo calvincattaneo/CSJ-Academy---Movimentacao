@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     public float Speed;
+    public float JumpForce;
+    private bool isGrounded;
     private Rigidbody2D rig;
     private Animator anim;
     private SpriteRenderer sprite;
@@ -31,5 +33,18 @@ public class Player : MonoBehaviour {
             anim.SetBool("isWalking", true);
             sprite.flipX = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded) {
+            rig.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            anim.SetBool("isJumping", true);
+            isGrounded = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        if(collision.gameObject.layer == 8) {
+            isGrounded = true;
+            anim.SetBool("isJumping", false);
+        }    
     }
 }
