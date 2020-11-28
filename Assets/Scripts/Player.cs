@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
 
     public float Speed;
     public float JumpForce;
+    private float timeAttack;
+    public float startTimeAttack;
     private bool isGrounded;
     private Rigidbody2D rig;
     private Animator anim;
@@ -38,6 +40,16 @@ public class Player : MonoBehaviour {
             rig.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
             anim.SetBool("isJumping", true);
             isGrounded = false;
+        }
+
+        if(timeAttack <= 0 ) {
+            if(Input.GetKeyDown(KeyCode.Z)) {
+                anim.SetTrigger("isAttacking");
+                timeAttack = startTimeAttack;
+            }
+        } else {
+            timeAttack -= Time.deltaTime;
+            anim.SetTrigger("isAttacking");
         }
     }
 
