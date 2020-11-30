@@ -19,9 +19,9 @@ public class Player : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    
+    private bool isAtk;
     void FixedUpdate() {
-        if(Input.GetKey(KeyCode.LeftArrow)) {
+        if(Input.GetKey(KeyCode.LeftArrow) && !isAtk) {
             rig.velocity = new Vector2(-Speed, rig.velocity.y);
             anim.SetBool("isWalking", true);
             sprite.flipX = true;
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
             anim.SetBool("isWalking", false);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow)) {
+        if (Input.GetKey(KeyCode.RightArrow) && !isAtk) {
             rig.velocity = new Vector2(Speed, rig.velocity.y);
             anim.SetBool("isWalking", true);
             sprite.flipX = false;
@@ -43,14 +43,20 @@ public class Player : MonoBehaviour {
         }
 
         if(timeAttack <= 0 ) {
-            if(Input.GetKeyDown(KeyCode.Z)) {
-                anim.SetTrigger("isAttacking");
+            isAtk = false;
+            if (Input.GetKeyDown(KeyCode.Z)) {
+                //anim.SetTrigger("isAttacking");
+                anim.SetBool("isAtk", true);
                 timeAttack = startTimeAttack;
+                isAtk = true;
             }
         } else {
             timeAttack -= Time.deltaTime;
-            anim.SetTrigger("isAttacking");
+            //anim.SetTrigger("isAttacking");
+            anim.SetBool("isAtk", false);
         }
+
+        anim.SetBool("isAtk", isAtk);
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
