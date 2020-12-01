@@ -12,6 +12,9 @@ public class Player : MonoBehaviour {
     private Rigidbody2D rig;
     private Animator anim;
     private SpriteRenderer sprite;
+    public Transform point;
+    public Transform backPoint;
+    public GameObject energy;
 
     void Start() {
         rig = GetComponent<Rigidbody2D>();
@@ -57,6 +60,16 @@ public class Player : MonoBehaviour {
         }
 
         anim.SetBool("isAtk", isAtk);
+
+        if(Input.GetKeyDown(KeyCode.X)) {
+            GameObject bullet = Instantiate(energy);
+            if (!sprite.flipX) {
+                bullet.transform.position = point.transform.position;
+            } else {
+                bullet.transform.position = backPoint.transform.position;
+            }
+            
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
